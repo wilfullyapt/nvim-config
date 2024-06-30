@@ -139,5 +139,21 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup("plugins")
 
+vim.diagnostic.config({
+  virtual_text = false,
+  underline = false,
+})
+
+local diagnostics_active = true
+vim.keymap.set('n', '<leader>tt', function()
+  diagnostics_active = not diagnostics_active
+  if diagnostics_active then
+    vim.diagnostic.show()
+  else
+    vim.diagnostic.hide()
+  end
+end, { desc = 'Toggle diagnostics' })
+
+
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
