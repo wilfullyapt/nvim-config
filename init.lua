@@ -139,11 +139,6 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup("plugins")
 
-vim.diagnostic.config({
-  virtual_text = false,
-  underline = false,
-})
-
 local diagnostics_active = true
 vim.keymap.set('n', '<leader>tt', function()
   diagnostics_active = not diagnostics_active
