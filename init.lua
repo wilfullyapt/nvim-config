@@ -28,6 +28,8 @@ vim.opt.clipboard = "unnamedplus"
 vim.api.nvim_set_keymap('n', 'x', '"ax', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('v', 'x', '"ax', { noremap = true, silent = true })
 
+vim.keymap.set('n', 'cr', '"_diwp', { desc = 'Replace the word with the previosly yanked text', silent = true })
+
 -- Enable break indent
 vim.opt.breakindent = true
 
