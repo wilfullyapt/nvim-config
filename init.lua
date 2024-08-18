@@ -28,7 +28,7 @@ vim.opt.clipboard = "unnamedplus"
 vim.api.nvim_set_keymap('n', 'x', '"ax', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('v', 'x', '"ax', { noremap = true, silent = true })
 
-vim.keymap.set('n', 'cr', '"_diwp', { desc = 'Replace the word with the previosly yanked text', silent = true })
+vim.keymap.set('n', 'cr', '"_diwP', { desc = 'Replace the word with the previosly yanked text', silent = true })
 
 -- Enable break indent
 vim.opt.breakindent = true
@@ -87,33 +87,53 @@ vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right win
 vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
 vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
 
-local function cycle_tabs(direction) -- cycle_tabs function will check the current tab and cycle the correct direction
-  local current_tab = vim.fn.tabpagenr()
-  local last_tab = vim.fn.tabpagenr("$")
+-- Jump up and down by 10 lines
+local jump_lines = 10
+vim.keymap.set('n', '<A-j>', jump_lines .. 'j', { noremap = true })
+vim.keymap.set('n', '<A-k>', jump_lines .. 'k', { noremap = true })
 
-  if direction == "next" then
-    if current_tab == last_tab then
-      vim.cmd("tabnext 1")
-    else
-      vim.cmd("tabnext")
-    end
-  elseif direction == "prev" then
-    if current_tab == 1 then
-      vim.cmd("tabnext " .. last_tab)
-    else
-      vim.cmd("tabprevious")
-    end
-  end
-end
-
-vim.keymap.set("n", "<C-U>", function()
-  cycle_tabs("prev")
-end, { desc = "Previous tab" })
-vim.keymap.set("n", "<C-I>", function()
-  cycle_tabs("next")
-end, { desc = "Next tab" })
 -- <C-N> for a new tab
 vim.keymap.set("n", "<C-N>", ":tabnew<CR>", { desc = "New Tab" })
+
+-- Comment/Uncomment keymapping
+local comment_chars = {
+  cpp = "//",
+  java = "//",
+  python = "#",
+  lua = "--",
+  yaml = "#",
+}
+
+vim.keymap.set("n", "cb", function()
+  local filetype = vim.bo.filetype
+  local comment_char = comment_chars[filetype]
+
+  if comment_char then
+    local line = vim.api.nvim_get_current_line()
+    local new_line
+
+    -- COMMENT DETECTED
+    if string.sub(line, 1, #comment_char) == comment_char then
+      if string.sub(line, #comment_char + 1, #comment_char + #comment_char) == string.rep(" ", #comment_char) then
+        new_line = string.rep(" ", #comment_char) .. string.sub(line, #comment_char + 1)
+      else
+        new_line = string.sub(line, #comment_char + 1)
+      end
+
+    -- NO COMMENT DETECTED
+    else
+      if string.sub(line, 1, #comment_char) == string.rep(" ", #comment_char) then
+        new_line = comment_char .. string.sub(line, #comment_char + 1)
+      else
+        new_line = comment_char .. line
+      end
+    end
+
+    vim.api.nvim_set_current_line(new_line)
+  else
+    vim.api.nvim_err_writeln("Comment characters not defined for this filetype")
+  end
+end, { noremap = true, desc = "Comment/Uncomment Line" })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
