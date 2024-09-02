@@ -11,22 +11,10 @@ return {
   },
   config = function()
     require("codecompanion").setup({
-      adapters = {
-        anthropic = require("codecompanion.adapters").use("anthropic", {
-          schema = {
-            model = {
-              default = "claude-3-sonnet-20240229",
-            },
-          },
-          env = {
-            api_key = "ANTHROPIC_API_KEY"
-          },
-        }),
-      },
       strategies = {
-        chat = "anthropic",
-        inline = "anthropic",
-        agent = "anthropic"
+        chat = { adapter = "anthropic", },
+        inline = { adapter = "copilot", },
+        agent = { adapter = "anthropic", },
       },
       prompts = {
         ["Full Context Rewriter"] = {
