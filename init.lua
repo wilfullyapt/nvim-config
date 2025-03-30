@@ -28,7 +28,8 @@ vim.opt.clipboard = "unnamedplus"
 vim.api.nvim_set_keymap('n', 'x', '"ax', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('v', 'x', '"ax', { noremap = true, silent = true })
 
-vim.keymap.set('n', 'cr', '"_diwP', { desc = 'Replace the word with the previosly yanked text', silent = true })
+vim.keymap.set('n', 'cR', '"_diwP', { desc = 'Replace the word with the previosly yanked text', silent = true })
+vim.keymap.set('n', 'cr', '"_diwp', { desc = 'Replace the word with the previosly yanked text', silent = true })
 
 -- Enable break indent
 vim.opt.breakindent = true
@@ -99,12 +100,14 @@ vim.keymap.set("n", "<C-N>", ":tabnew<CR>", { desc = "New Tab" })
 local comment_chars = {
   cpp = "//",
   java = "//",
+  javascript = "//",
+  typescript = "//",
   python = "#",
   lua = "--",
   yaml = "#",
 }
 
-vim.keymap.set("n", "cb", function()
+vim.keymap.set("n", "cz", function()
   local filetype = vim.bo.filetype
   local comment_char = comment_chars[filetype]
 
