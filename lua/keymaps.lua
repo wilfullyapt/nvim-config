@@ -14,3 +14,7 @@ vim.keymap.set("n", "<leader>3", function() harpoon:list():select(3) end, { desc
 vim.keymap.set("n", "<leader>4", function() harpoon:list():select(4) end, { desc = "Harpoon: Select mark 4" })
 vim.keymap.set("n", "<leader>[", function() harpoon:list():prev() end, { desc = "Harpoon: Previous mark" })
 vim.keymap.set("n", "<leader>]", function() harpoon:list():next() end, { desc = "Harpoon: Next mark" })
+
+
+-- UndoTree Remap
+vim.keymap.set('n', '<leader><F5>', vim.cmd.UndotreeToggle)
