@@ -4,7 +4,83 @@ vim.g.maplocalleader = "\\"
 
 
 -- Key Mappings
-vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
+vim.keymap.set("n", "<leader>pv", vim.cmd.Ex, { desc = 'File Explorer' })
+vim.keymap.set('n', 'cr', '"_diwP', { desc = 'Replace the word with the previosly yanked text', silent = true })
+
+-- Remap to move between window focusing
+vim.keymap.set("n", "<leader>a", "<C-w><C-h>", { desc = "Move focus to the left window" })
+vim.keymap.set("n", "<leader>d", "<C-w><C-l>", { desc = "Move focus to the right window" })
+vim.keymap.set("n", "<leader>s", "<C-w><C-j>", { desc = "Move focus to the lower window" })
+vim.keymap.set("n", "<leader>w", "<C-w><C-k>", { desc = "Move focus to the upper window" })
+
+
+-- Remap to move entire blocks of code in visual mode
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+
+
+-- Copy to system clipboard
+vim.keymap.set({"n", "v"}, "<leader>y", [["+y]], { desc = "Copy to system clipboard" })
+vim.keymap.set({"n", "v"}, "<leader>Y", [["+Y]], { desc = "Copy line to system clipboard" })
+
+-- Paste from system clipboard
+vim.keymap.set({"n", "v"}, "<leader>p", [["+p]], { desc = "Paste from system clipboard" })
+vim.keymap.set({"n", "v"}, "<leader>P", [["+P]], { desc = "Paste from system clipboard before cursor" })
+
+-- Comment/Uncomment keymapping
+local comment_chars = {
+  cpp = "//",
+  java = "//",
+  javascript = "//",
+  typescript = "//",
+  python = "#",
+  lua = "--",
+  yaml = "#",
+}
+vim.keymap.set("n", "cz", function()
+  local filetype = vim.bo.filetype
+  local comment_char = comment_chars[filetype]
+
+  if comment_char then
+    local line = vim.api.nvim_get_current_line()
+    local new_line
+
+    -- COMMENT DETECTED
+    if string.sub(line, 1, #comment_char) == comment_char then
+      if string.sub(line, #comment_char + 1, #comment_char + #comment_char) == string.rep(" ", #comment_char) then
+        new_line = string.rep(" ", #comment_char) .. string.sub(line, #comment_char + 1)
+      else
+        new_line = string.sub(line, #comment_char + 1)
+      end
+
+    -- NO COMMENT DETECTED
+    else
+      if string.sub(line, 1, #comment_char) == string.rep(" ", #comment_char) then
+        new_line = comment_char .. string.sub(line, #comment_char + 1)
+      else
+        new_line = comment_char .. line
+      end
+    end
+
+    vim.api.nvim_set_current_line(new_line)
+  else
+    vim.api.nvim_err_writeln("Comment characters not defined for this filetype")
+  end
+end, { noremap = true, desc = "Comment/Uncomment Line" })
+
+-- [[ Basic Autocommands ]]
+--  See `:help lua-guide-autocommands`
+
+-- Highlight when yanking (copying) text
+--  Try it with `yap` in normal mode
+--  See `:help vim.highlight.on_yank()`
+vim.api.nvim_create_autocmd("TextYankPost", {
+  desc = "Highlight when yanking (copying) text",
+  group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
+  callback = function()
+    vim.highlight.on_yank()
+  end,
+})
 
 
 -- Options
@@ -18,7 +94,6 @@ vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
-
 vim.opt.smartindent = true
 vim.opt.wrap = false
 
@@ -29,14 +104,16 @@ vim.opt.undofile = false
 
 vim.opt.hlsearch = true
 vim.opt.incsearch = true
+vim.opt.incsearch = true
 
 vim.opt.scrolloff = 8
 vim.opt.signcolumn = "yes"
 vim.opt.isfname:append("@-@")
 
 vim.opt.updatetime = 50
-
 vim.opt.colorcolumn = "80"
+
+vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 
 
 -- Bootstrap lazy.nvim

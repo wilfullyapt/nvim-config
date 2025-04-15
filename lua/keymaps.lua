@@ -17,4 +17,5 @@ vim.keymap.set("n", "<leader>]", function() harpoon:list():next() end, { desc = 
 
 
 -- UndoTree Remap
-vim.keymap.set('n', '<leader><F5>', vim.cmd.UndotreeToggle)
+vim.keymap.set('n', '<leader>q', vim.cmd.UndotreeToggle)
+
