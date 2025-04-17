@@ -19,6 +19,11 @@ vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 
 
+-- Jump up and down 20 lines
+vim.keymap.set("n", "<A-j>", "20j", { desc = "Jump down 20 lines" })
+vim.keymap.set("n", "<A-k>", "20k", { desc = "Jump up 20 lines" })
+
+
 -- Copy to system clipboard
 vim.keymap.set({"n", "v"}, "<leader>y", [["+y]], { desc = "Copy to system clipboard" })
 vim.keymap.set({"n", "v"}, "<leader>Y", [["+Y]], { desc = "Copy line to system clipboard" })
@@ -68,12 +73,8 @@ vim.keymap.set("n", "cz", function()
   end
 end, { noremap = true, desc = "Comment/Uncomment Line" })
 
--- [[ Basic Autocommands ]]
---  See `:help lua-guide-autocommands`
 
 -- Highlight when yanking (copying) text
---  Try it with `yap` in normal mode
---  See `:help vim.highlight.on_yank()`
 vim.api.nvim_create_autocmd("TextYankPost", {
   desc = "Highlight when yanking (copying) text",
   group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),

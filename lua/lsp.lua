@@ -1,5 +1,3 @@
-
-
 vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(event)
     local opts = {buffer = event.buf}
