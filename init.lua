@@ -49,6 +49,8 @@ vim.keymap.set("n", "cz", function()
   if comment_char then
     local line = vim.api.nvim_get_current_line()
     local new_line
+-- Setup the LSP
+require("lsp")
 
     -- COMMENT DETECTED
     if string.sub(line, 1, #comment_char) == comment_char then
@@ -138,7 +140,7 @@ require("lazy").setup('plugins')
 
 
 -- Setup the LSP
-require("lsp")
+--require("lsp")
 
 
 -- Post Lazy Key Mapping

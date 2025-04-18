@@ -19,7 +19,7 @@ return {
       group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
       callback = function(event)
 
-        local map = function(keys, func, desc)
+       local map = function(keys, func, desc)
           vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
         end
 
@@ -66,7 +66,9 @@ return {
       }
     })
 
-    require('cmp').setup({
+    local cmp = require('cmp')
+
+    cmp.setup({
       sources = {
         {name = 'nvim_lsp'},
         {name = 'buffer'},
