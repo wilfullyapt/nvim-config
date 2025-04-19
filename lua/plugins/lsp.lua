@@ -1,22 +1,21 @@
 return {
   'neovim/nvim-lspconfig',
+
   dependencies = {
     { 'williamboman/mason.nvim', config = true },
     { 'williamboman/mason-lspconfig.nvim' },
     { 'WhoIsSethDaniel/mason-tool-installer.nvim' },
     { 'j-hui/fidget.nvim', opts = {} },
     { 'folke/neodev.nvim', opts = {} },
-	{'neovim/nvim-lspconfig'},
 	{'hrsh7th/cmp-nvim-lsp'},
 	{'hrsh7th/nvim-cmp'},
-    {'WhoIsSethDaniel/mason-tool-installer.nvim'},
+    { 'L3MON4D3/LuaSnip', dependencies = { 'saadparwaiz1/cmp_luasnip', 'rafamadriz/friendly-snippets' } },
   },
 
   config = function()
 
     vim.api.nvim_create_autocmd('LspAttach', {
 
-      group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
       callback = function(event)
 
        local map = function(keys, func, desc)
@@ -37,9 +36,13 @@ return {
       end,
     })
 
+
+    -- Capabilities
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
+
+    -- Mason Setup
     require('mason').setup({})
     require('mason-tool-installer').setup({
             ensure_installed = {
@@ -58,28 +61,77 @@ return {
             }
         })
 
+    -- Mason-LSPConfig with Custom Settings
+    local servers = {
+      pyright = { settings = { python = { analysis = { typeCheckingMode = 'strict' } } } },
+      lua_ls = { settings = { Lua = { diagnostics = { globals = { 'vim' } } } } },
+    }
     require('mason-lspconfig').setup({
       handlers = {
         function(server_name)
-          require('lspconfig')[server_name].setup({})
+          local server = servers[server_name] or {}
+          server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+          require('lspconfig')[server_name].setup(server)
         end,
       }
     })
 
+    -- Completion Setup
     local cmp = require('cmp')
+    local luasnip = require('luasnip')
+    require('luasnip.loaders.from_vscode').lazy_load()
+    require('luasnip.loaders.from_lua').load({ paths = '~/.config/nvim/lua/snippets/' })
+    luasnip.config.setup({})
 
     cmp.setup({
-      sources = {
-        {name = 'nvim_lsp'},
-        {name = 'buffer'},
-      },
       snippet = {
         expand = function(args)
-          -- You need Neovim v0.10 to use vim.snippet
-          vim.snippet.expand(args.body)
+          luasnip.lsp_expand(args.body)
         end,
       },
-      mapping = cmp.mapping.preset.insert({}),
+      window = {
+        completion = cmp.config.window.bordered(),
+        documentation = cmp.config.window.bordered(),
+      },
+      sources = {
+        { name = 'nvim_lsp', priority = 1000 },
+        { name = 'luasnip', priority = 750 },
+        { name = 'path', priority = 500 },
+        { name = 'buffer', priority = 250 },
+      },
+      mapping = cmp.mapping.preset.insert({
+        ['<Tab>'] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            cmp.select_next_item()
+          elseif luasnip.expand_or_jumpable() then
+            luasnip.expand_or_jump()
+          else
+            fallback()
+          end
+        end, { 'i', 's' }),
+        ['<S-Tab>'] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            cmp.select_prev_item()
+          elseif luasnip.jumpable(-1) then
+            luasnip.jump(-1)
+          else
+            fallback()
+          end
+        end, { 'i', 's' }),
+        ['<Enter>'] = cmp.mapping.confirm({ select = true }),
+        ['<C-Space>'] = cmp.mapping.complete(),
+        ['<C-e>'] = cmp.mapping.abort(),
+        ['<C-d>'] = cmp.mapping(function()
+          if cmp.visible() then
+            vim.lsp.buf.hover()
+          end
+        end, { 'i' }),
+        ['<C-s>'] = cmp.mapping(function()
+          if cmp.visible() then
+            vim.lsp.buf.signature_help()
+          end
+        end, { 'i' }),
+      }),
     })
   end,
 }

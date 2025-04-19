@@ -15,6 +15,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
+
+
 local lspconfig_defaults = require('lspconfig').util.default_config
 lspconfig_defaults.capabilities = vim.tbl_deep_extend(
   'force',

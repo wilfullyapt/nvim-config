@@ -2,3 +2,6 @@ lazy-lock.json
 Session.vim
 
 secret.lua
+
+
+.undodir/

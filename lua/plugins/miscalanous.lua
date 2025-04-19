@@ -9,7 +9,6 @@ return {
 
 	-- Singlular Add-ons; if the come with config, they get their own file
 	{ 'nvim-treesitter/playground' },
-	{ 'mbbill/undotree' },
 	{ 'tpope/vim-fugitive' },
 
     {
