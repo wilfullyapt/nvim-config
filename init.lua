@@ -13,6 +13,10 @@ vim.keymap.set("n", "<leader>d", "<C-w><C-l>", { desc = "Move focus to the right
 vim.keymap.set("n", "<leader>s", "<C-w><C-j>", { desc = "Move focus to the lower window" })
 vim.keymap.set("n", "<leader>w", "<C-w><C-k>", { desc = "Move focus to the upper window" })
 
+-- Remap "Record Macro" to SHIFT+Q and remap q to jump back one word
+vim.keymap.set('n', 'Q', 'q', { noremap = true, silent = true, desc = "Record Macro" }) -- Preserve q for macros
+vim.keymap.set('n', 'q', 'b', { noremap = true, silent = true, desc = "Prev word" })
+
 
 -- Remap to move entire blocks of code in visual mode
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
@@ -20,8 +24,8 @@ vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 
 
 -- Jump up and down 20 lines
-vim.keymap.set("n", "<A-j>", "20j", { desc = "Jump down 20 lines" })
-vim.keymap.set("n", "<A-k>", "20k", { desc = "Jump up 20 lines" })
+vim.keymap.set("n", "n", "20j", { desc = "Jump down 20 lines" })
+vim.keymap.set("n", "m", "20k", { desc = "Jump up 20 lines" })
 
 
 -- Copy to system clipboard
@@ -114,7 +118,7 @@ vim.opt.signcolumn = "yes"
 vim.opt.isfname:append("@-@")
 
 vim.opt.updatetime = 50
-vim.opt.colorcolumn = "80"
+vim.opt.colorcolumn = "120"
 
 vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 
