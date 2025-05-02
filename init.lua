@@ -23,9 +23,9 @@ vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 
 
--- Jump up and down 20 lines
---vim.keymap.set("n", "m", "20j", { desc = "Jump down 20 lines" })
---vim.keymap.set("n", ",", "20k", { desc = "Jump up 20 lines" })
+-- Jump up and down 20 lines and keep centered
+vim.keymap.set("n", ",", "20jzz", { desc = "Jump down 20 lines" })
+vim.keymap.set("n", "f", "20kzz", { desc = "Jump up 20 lines" })
 
 
 -- Copy to system clipboard
