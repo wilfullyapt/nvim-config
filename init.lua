@@ -24,8 +24,8 @@ vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 
 
 -- Jump up and down 20 lines
-vim.keymap.set("n", "n", "20j", { desc = "Jump down 20 lines" })
-vim.keymap.set("n", "m", "20k", { desc = "Jump up 20 lines" })
+--vim.keymap.set("n", "m", "20j", { desc = "Jump down 20 lines" })
+--vim.keymap.set("n", ",", "20k", { desc = "Jump up 20 lines" })
 
 
 -- Copy to system clipboard
@@ -53,8 +53,6 @@ vim.keymap.set("n", "cz", function()
   if comment_char then
     local line = vim.api.nvim_get_current_line()
     local new_line
--- Setup the LSP
-require("lsp")
 
     -- COMMENT DETECTED
     if string.sub(line, 1, #comment_char) == comment_char then
@@ -141,10 +139,6 @@ end
 vim.opt.rtp:prepend(lazypath)
 -- Setup lazy.nvim
 require("lazy").setup('plugins')
-
-
--- Setup the LSP
---require("lsp")
 
 
 -- Post Lazy Key Mapping
