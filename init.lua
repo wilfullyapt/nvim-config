@@ -18,14 +18,18 @@ vim.keymap.set('n', 'Q', 'q', { noremap = true, silent = true, desc = "Record Ma
 vim.keymap.set('n', 'q', 'b', { noremap = true, silent = true, desc = "Prev word" })
 
 
+-- Remap to goto last file, switching between file1 and file2 seemlessly
+vim.keymap.set("n", "<leader><leader>", "<C-^>", { desc = "Toggle between current and alternate file" })
+
+
 -- Remap to move entire blocks of code in visual mode
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 
 
 -- Jump up and down 20 lines and keep centered
-vim.keymap.set("n", ",", "20jzz", { desc = "Jump down 20 lines" })
-vim.keymap.set("n", "f", "20kzz", { desc = "Jump up 20 lines" })
+vim.keymap.set("n", "<A-j>", "20jzz", { desc = "Jump down 20 lines" })
+vim.keymap.set("n", "<A-k>", "20kzz", { desc = "Jump up 20 lines" })
 
 
 -- Copy to system clipboard

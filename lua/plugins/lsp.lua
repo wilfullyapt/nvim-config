@@ -22,6 +22,16 @@ return {
           vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
         end
 
+        local diagnostics_active = true
+        map('<leader>td', function()
+          diagnostics_active = not diagnostics_active
+          if diagnostics_active then
+            vim.diagnostic.config({ virtual_text = true, signs = true })
+          else
+            vim.diagnostic.config({ virtual_text = false, signs = false })
+          end
+        end, '[T]oggle [D]iagnostics')
+
         --  LSP keymapping will jump your buffer. To jump back, press <C-t>.
         map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
         map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
@@ -46,6 +56,7 @@ return {
     require('mason').setup({})
     require('mason-tool-installer').setup({
             ensure_installed = {
+              'clangd',         -- c/c++
               'stylua',         -- Lua formatter
               'black',          -- Python formatter
               'flake8',         -- Python linter
@@ -63,7 +74,7 @@ return {
 
     -- Mason-LSPConfig with Custom Settings
     local servers = {
-      pyright = { settings = { python = { analysis = { typeCheckingMode = 'strict' } } } },
+      pyright = { settings = { python = { analysis = { typeCheckingMode = 'basic' } } } },          -- typeCheckingMode = 'strict' or 'basic' or 'off'
       lua_ls = { settings = { Lua = { diagnostics = { globals = { 'vim' } } } } },
     }
     require('mason-lspconfig').setup({
@@ -95,9 +106,9 @@ return {
       },
       sources = {
         { name = 'nvim_lsp', priority = 1000 },
+        { name = 'buffer', priority = 840, keyword_length = 2 },
         { name = 'luasnip', priority = 750 },
         { name = 'path', priority = 500 },
-        { name = 'buffer', priority = 250 },
       },
       mapping = cmp.mapping.preset.insert({
         ['<Tab>'] = cmp.mapping(function(fallback)
