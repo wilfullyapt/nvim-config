@@ -4,14 +4,14 @@ vim.g.maplocalleader = "\\"
 
 
 -- Key Mappings
-vim.keymap.set("n", "<leader>pv", vim.cmd.Ex, { desc = 'File Explorer' })
+--vim.keymap.set("n", "<leader>pv", vim.cmd.Ex, { desc = 'File Explorer' })
 vim.keymap.set('n', 'cr', '"_diwP', { desc = 'Replace the word with the previosly yanked text', silent = true })
 
 -- Remap to move between window focusing
-vim.keymap.set("n", "<leader>a", "<C-w><C-h>", { desc = "Move focus to the left window" })
-vim.keymap.set("n", "<leader>d", "<C-w><C-l>", { desc = "Move focus to the right window" })
-vim.keymap.set("n", "<leader>s", "<C-w><C-j>", { desc = "Move focus to the lower window" })
-vim.keymap.set("n", "<leader>w", "<C-w><C-k>", { desc = "Move focus to the upper window" })
+--vim.keymap.set("n", "<leader>a", "<C-w><C-h>", { desc = "Move focus to the left window" })
+--vim.keymap.set("n", "<leader>d", "<C-w><C-l>", { desc = "Move focus to the right window" })
+--vim.keymap.set("n", "<leader>s", "<C-w><C-j>", { desc = "Move focus to the lower window" })
+--vim.keymap.set("n", "<leader>w", "<C-w><C-k>", { desc = "Move focus to the upper window" })
 
 -- Remap "Record Macro" to SHIFT+Q and remap q to jump back one word
 vim.keymap.set('n', 'Q', 'q', { noremap = true, silent = true, desc = "Record Macro" }) -- Preserve q for macros

@@ -24,6 +24,18 @@ return {
         opts = { signs = false },
     },
 
-    { "nvim-tree/nvim-web-devicons" }
+    { "nvim-tree/nvim-web-devicons" },
+
+    {
+      'echasnovski/mini.icons',                     -- Icons
+      opts = {
+        style = 'glyph',                            -- 'glyph uses NerdFonts | 'ascii' if your terminal/font lacks icon support
+      },
+      config = function(_, opts)
+        require('mini.icons').setup(opts)
+        -- Optional: Mock nvim-web-devicons for compatibility with other plugins
+--      require('mini.icons').mock_nvim_web_devicons()
+      end,
+    }
 
 }
